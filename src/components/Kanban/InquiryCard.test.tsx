@@ -3,8 +3,19 @@ import { describe, it, expect } from 'vitest'
 import InquiryCard from './InquiryCard'
 import { InquiryStatus } from '../../types/inquiry'
 
+// Mock dnd-kit sortable hook to avoid DOM drag complexities in unit tests
+vi.mock('@dnd-kit/sortable', () => ({
+  useSortable: () => ({
+    setNodeRef: (el: any) => {},
+    attributes: {},
+    listeners: {},
+    transform: null,
+    transition: undefined,
+  }),
+}))
+
 describe('InquiryCard', () => {
-  it('renders title, badges, assignee and draggable attributes', () => {
+  it('renders title, badges and assignee', () => {
     const inquiry = {
       id: 'abc',
       title: 'Help needed',
@@ -21,7 +32,6 @@ describe('InquiryCard', () => {
     expect(screen.getByText(/Assignee:/i)).toHaveTextContent('Assignee: John')
 
     const article = screen.getByLabelText(`inquiry-card-${inquiry.id}`)
-    expect(article).toHaveAttribute('draggable', 'true')
     expect(article).toHaveAttribute('data-inquiry-id', inquiry.id)
   })
 

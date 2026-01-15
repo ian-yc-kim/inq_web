@@ -2,7 +2,7 @@ import './styles/App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Login from './pages/Login'
-import Board from './pages/Board'
+import Board from './pages/admin/Board'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {

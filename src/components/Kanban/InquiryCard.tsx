@@ -1,23 +1,33 @@
 import type { Inquiry } from '../../types/inquiry'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 interface InquiryCardProps {
   inquiry: Inquiry
 }
 
 export default function InquiryCard({ inquiry }: InquiryCardProps) {
+  const { setNodeRef, attributes, listeners, transform, transition } = useSortable({ id: inquiry.id })
+
+  const style = {
+    transform: transform ? CSS.Transform.toString(transform) : undefined,
+    transition,
+    border: '1px solid #e0e0e0',
+    padding: 12,
+    borderRadius: 6,
+    background: '#fff',
+    cursor: 'grab',
+    boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+  } as const
+
   return (
     <article
-      draggable={true}
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
       data-inquiry-id={inquiry.id}
       aria-label={`inquiry-card-${inquiry.id}`}
-      style={{
-        border: '1px solid #e0e0e0',
-        padding: 12,
-        borderRadius: 6,
-        background: '#fff',
-        cursor: 'grab',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
-      }}
+      style={style}
     >
       <h3 style={{ margin: '0 0 8px 0', fontSize: 16 }}>{inquiry.title}</h3>
 
