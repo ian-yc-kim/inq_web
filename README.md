@@ -4,20 +4,33 @@
 
 inquiry-web (inq_web) is a React + Vite + TypeScript frontend prototype for an AI Customer Inquiry Board. The app's vision is to provide a public inquiry submission form for customers and a JWT-protected staff dashboard with a Kanban-style board, real-time updates, and inquiry reply workflows. This README clearly separates current implementation from planned features.
 
+## Inquiry Board
+
+The Inquiry Board is the staff-facing dashboard used to manage customer inquiries. It provides a Kanban-style interface where inquiries are organized into columns by status. Key features:
+
+- Drag & Drop: Staff can drag inquiry cards between status columns to change their state.
+- Real-time updates: The board receives server-sent events via WebSocket so multiple staff members see updates live.
+- Card details & reply workflows: Each inquiry card links to details and reply functionality (partial/planned depending on deployment).
+
+Implementation notes:
+- The Kanban UI components are implemented under src/components/Kanban/ (InquiryCard, KanbanColumn).
+- Drag-and-drop is implemented using dnd-kit in src/pages/admin/Board.tsx.
+- WebSocket integration for real-time updates is provided by src/services/socketService.ts.
+
 ## Current implementation (what exists now)
 
 - Staff Login page (src/pages/Login.tsx) with a simple email/password form.
-- Protected placeholder Inquiry Board page that renders a header (src/pages/Board.tsx).
+- Protected Inquiry Board page with Kanban components (src/pages/admin/Board.tsx).
+- Kanban board UI with drag-and-drop support implemented via dnd-kit.
+- WebSocket-powered real-time updates via src/services/socketService.ts.
 - Client-side routing with react-router-dom and protected routes via src/components/PrivateRoute.tsx.
 - Mock authentication enabled by default for local development (see Authentication section).
-- Basic unit tests for AuthContext, Login, and App.
+- Basic unit tests for AuthContext, Login, Board, and Kanban components.
 
 ## Planned features (not yet implemented)
 
-- Public customer inquiry submission form
-- Full Kanban board UI with drag-and-drop status management
-- WebSocket-powered real-time updates
-- Detailed inquiry view and reply functionality
+- Public customer inquiry submission form (public-facing submission UI)
+- Detailed inquiry view and full reply workflow (backend integration and UI polishing)
 
 ## Getting started
 
@@ -48,6 +61,12 @@ The project reads runtime configuration from environment variables (see .env.exa
 
 - VITE_BASE_PATH - base path for deployment (leave '/' or set a subpath)
 - VITE_API_URL - backend API base URL (used when mock auth is disabled)
+- VITE_WS_URL - WebSocket URL for realtime events used by the Inquiry Board
+
+VITE_WS_URL is required for real-time updates on the Inquiry Board. Use the ws:// scheme for insecure local dev or wss:// for secure deployments. Example values:
+
+- ws://localhost:4000
+- wss://host.example/ws
 
 Copy .env.example to .env and adjust values as needed for your environment.
 
@@ -69,6 +88,8 @@ Switching to a real backend:
 1. Set USE_MOCK_AUTH = false in src/services/authService.ts (or wire an env toggle if desired).
 2. Ensure VITE_API_URL is set in your .env to the backend base URL.
 3. The frontend will POST to {VITE_API_URL}/auth/login for authentication.
+
+Also ensure VITE_WS_URL is set to enable real-time board updates (see Configuration section).
 
 ## Routing and protected routes
 
@@ -92,6 +113,8 @@ Key test files:
 - src/App.test.tsx
 - src/context/AuthContext.test.tsx
 - src/pages/Login.test.tsx
+- src/pages/admin/Board.test.tsx
+- src/components/Kanban/InquiryCard.test.tsx
 
 Notes on tests:
 - Tests mock network and auth service calls where appropriate.
