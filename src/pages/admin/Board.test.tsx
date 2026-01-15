@@ -1,4 +1,3 @@
-import React from 'react'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { describe, it, vi, beforeEach, expect } from 'vitest'
 import Board from './Board'
@@ -23,7 +22,7 @@ vi.mock('@dnd-kit/core', () => {
   }
   const PointerSensor = () => null
   function useDroppable() {
-    return { setNodeRef: (el: any) => {} }
+    return { setNodeRef: () => {} }
   }
   return {
     DndContext,
@@ -42,7 +41,7 @@ vi.mock('@dnd-kit/sortable', () => {
   }
   function useSortable() {
     return {
-      setNodeRef: (el: any) => {},
+      setNodeRef: () => {},
       attributes: {},
       listeners: {},
       transform: null,

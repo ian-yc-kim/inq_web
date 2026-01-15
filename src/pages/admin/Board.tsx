@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Inquiry, InquiryStatus } from '../../types/inquiry'
 import * as inquiryService from '../../services/inquiryService'
 import * as socketService from '../../services/socketService'
@@ -70,7 +70,7 @@ export default function Board() {
 
   const sensors = useSensors(useSensor(PointerSensor))
 
-  const onDragEnd = async (event: { active: { id: string }; over: { id?: string } | null }) => {
+  const onDragEnd = async (event: any) => {
     const activeId = event.active?.id
     const overId = event.over?.id
     if (!activeId || !overId) return

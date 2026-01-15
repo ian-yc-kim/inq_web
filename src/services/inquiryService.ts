@@ -1,5 +1,16 @@
 import axios from 'axios'
-import type { Inquiry, InquiryStatus } from '../types/inquiry'
+import type { Inquiry, InquiryStatus, CreateInquiryRequest } from '../types/inquiry'
+
+export async function createInquiry(data: CreateInquiryRequest): Promise<Inquiry> {
+  try {
+    const url = `${import.meta.env.VITE_API_URL}/inquiries`
+    const res = await axios.post(url, data)
+    return res.data as Inquiry
+  } catch (error) {
+    console.error('inquiryService.createInquiry:', error)
+    throw error
+  }
+}
 
 export async function getInquiries(): Promise<Inquiry[]> {
   try {

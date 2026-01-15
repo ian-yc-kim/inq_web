@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import InquiryCard from './InquiryCard'
 import { InquiryStatus } from '../../types/inquiry'
 
 // Mock dnd-kit sortable hook to avoid DOM drag complexities in unit tests
 vi.mock('@dnd-kit/sortable', () => ({
   useSortable: () => ({
-    setNodeRef: (el: any) => {},
+    setNodeRef: () => {},
     attributes: {},
     listeners: {},
     transform: null,

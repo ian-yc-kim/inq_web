@@ -13,3 +13,11 @@ export interface Inquiry {
   assignee?: string
   badges: string[]
 }
+
+export interface CreateInquiryRequest {
+  name: string
+  email: string
+  phone: string
+  title: string
+  content: string
+}
