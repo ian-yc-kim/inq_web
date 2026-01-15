@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext'
 import Login from './pages/Login'
 import Board from './pages/admin/Board'
 import PrivateRoute from './components/PrivateRoute'
+import InquiryForm from './pages/public/InquiryForm'
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/board" element={<Board />} />
           </Route>
+
+          <Route path="/inquiry" element={<InquiryForm />} />
 
           <Route path="*" element={<Navigate to="/board" replace />} />
         </Routes>
