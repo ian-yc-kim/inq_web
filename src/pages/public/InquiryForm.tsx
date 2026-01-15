@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
-import { validate as validateEmail } from 'email-validator'
 import { createInquiry } from '../../services/inquiryService'
 import type { CreateInquiryRequest } from '../../types/inquiry'
 
 type FieldErrors = Partial<Record<'name' | 'email' | 'phone' | 'title' | 'content', string>>
+
+function isValidEmail(email: string): boolean {
+  // simple, deterministic validation for tests and runtime
+  // ensures a@b.c style addresses only
+  return /^\S+@\S+\.\S+$/.test(email)
+}
 
 export default function InquiryForm(): React.ReactElement {
   const [name, setName] = useState<string>('')
@@ -21,7 +26,7 @@ export default function InquiryForm(): React.ReactElement {
     const errs: FieldErrors = {}
     if (!name.trim()) errs.name = 'Name is required'
     if (!email.trim()) errs.email = 'Email is required'
-    else if (!validateEmail(email)) errs.email = 'Email is invalid'
+    else if (!isValidEmail(email)) errs.email = 'Email is invalid'
     if (!phone.trim()) errs.phone = 'Phone is required'
     if (!title.trim()) errs.title = 'Title is required'
     if (!content.trim()) errs.content = 'Content is required'
@@ -72,7 +77,8 @@ export default function InquiryForm(): React.ReactElement {
   return (
     <main>
       <h1>Submit an Inquiry</h1>
-      <form onSubmit={handleSubmit} aria-label="inquiry-form">
+      {/* disable native HTML validation so component validation runs consistently in tests */}
+      <form onSubmit={handleSubmit} aria-label="inquiry-form" noValidate>
         <div>
           <label htmlFor="name">Name</label>
           <input

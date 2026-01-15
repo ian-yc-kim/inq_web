@@ -1,6 +1,7 @@
 import type { Inquiry } from '../../types/inquiry'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { Link } from 'react-router-dom'
 
 interface InquiryCardProps {
   inquiry: Inquiry
@@ -29,7 +30,17 @@ export default function InquiryCard({ inquiry }: InquiryCardProps) {
       aria-label={`inquiry-card-${inquiry.id}`}
       style={style}
     >
-      <h3 style={{ margin: '0 0 8px 0', fontSize: 16 }}>{inquiry.title}</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+        <h3 style={{ margin: 0, fontSize: 16 }}>{inquiry.title}</h3>
+        <Link
+          to={`/admin/inquiries/${inquiry.id}`}
+          aria-label={`view-inquiry-${inquiry.id}`}
+          onPointerDown={(e) => e.stopPropagation()}
+          style={{ fontSize: 13, textDecoration: 'none', padding: '4px 8px', background: '#eef', borderRadius: 6 }}
+        >
+          View
+        </Link>
+      </div>
 
       {inquiry.badges.length > 0 && (
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 }}>

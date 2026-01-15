@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import InquiryCard from './InquiryCard'
 import { InquiryStatus } from '../../types/inquiry'
+import { MemoryRouter } from 'react-router-dom'
 
 // Mock dnd-kit sortable hook to avoid DOM drag complexities in unit tests
 vi.mock('@dnd-kit/sortable', () => ({
@@ -24,7 +25,11 @@ describe('InquiryCard', () => {
       badges: ['urgent', 'billing'],
     }
 
-    render(<InquiryCard inquiry={inquiry} />)
+    render(
+      <MemoryRouter>
+        <InquiryCard inquiry={inquiry} />
+      </MemoryRouter>
+    )
 
     expect(screen.getByText('Help needed')).toBeInTheDocument()
     expect(screen.getByText('urgent')).toBeInTheDocument()
@@ -43,9 +48,34 @@ describe('InquiryCard', () => {
       badges: [],
     } as any
 
-    render(<InquiryCard inquiry={inquiry} />)
+    render(
+      <MemoryRouter>
+        <InquiryCard inquiry={inquiry} />
+      </MemoryRouter>
+    )
 
     expect(screen.getByText('No one assigned')).toBeInTheDocument()
     expect(screen.queryByText(/Assignee:/i)).toBeNull()
+  })
+
+  it('renders a view link to the inquiry detail', () => {
+    const inquiry = {
+      id: 'abc',
+      title: 'Help needed',
+      status: InquiryStatus.NEW,
+      assignee: 'John',
+      badges: ['urgent'],
+    }
+
+    render(
+      <MemoryRouter>
+        <InquiryCard inquiry={inquiry} />
+      </MemoryRouter>
+    )
+
+    const link = screen.getByLabelText(`view-inquiry-${inquiry.id}`)
+    expect(link).toBeInTheDocument()
+    // href in jsdom is absolute, ensure it ends with expected path
+    expect((link as HTMLAnchorElement).href.endsWith(`/admin/inquiries/${inquiry.id}`)).toBeTruthy()
   })
 })
