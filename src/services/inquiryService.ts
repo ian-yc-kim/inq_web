@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Inquiry, InquiryStatus, CreateInquiryRequest } from '../types/inquiry'
+import type { Inquiry, InquiryStatus, CreateInquiryRequest, InquiryDetail, Message } from '../types/inquiry'
 
 export async function createInquiry(data: CreateInquiryRequest): Promise<Inquiry> {
   try {
@@ -30,6 +30,28 @@ export async function updateInquiry(id: string, status: InquiryStatus): Promise<
     return res.data as Inquiry
   } catch (error) {
     console.error('inquiryService.updateInquiry:', error)
+    throw error
+  }
+}
+
+export async function getInquiry(id: string): Promise<InquiryDetail> {
+  try {
+    const url = `${import.meta.env.VITE_API_URL}/inquiries/${id}`
+    const res = await axios.get(url)
+    return res.data as InquiryDetail
+  } catch (error) {
+    console.error('inquiryService.getInquiry:', error)
+    throw error
+  }
+}
+
+export async function replyInquiry(id: string, content: string): Promise<Message> {
+  try {
+    const url = `${import.meta.env.VITE_API_URL}/inquiries/${id}/reply`
+    const res = await axios.post(url, { content })
+    return res.data as Message
+  } catch (error) {
+    console.error('inquiryService.replyInquiry:', error)
     throw error
   }
 }

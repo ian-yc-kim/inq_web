@@ -21,3 +21,18 @@ export interface CreateInquiryRequest {
   title: string
   content: string
 }
+
+export interface Message {
+  id: string
+  content: string
+  sender: 'customer' | 'staff'
+  createdAt: string
+}
+
+export interface InquiryDetail extends Inquiry {
+  content: string
+  email: string
+  name: string
+  createdAt: string
+  messages: Message[]
+}

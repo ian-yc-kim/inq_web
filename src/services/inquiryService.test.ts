@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import axios from 'axios'
-import { getInquiries, updateInquiry, createInquiry } from './inquiryService'
+import { getInquiries, updateInquiry, createInquiry, getInquiry, replyInquiry } from './inquiryService'
 import { InquiryStatus } from '../types/inquiry'
 
 vi.mock('axios')
@@ -58,5 +58,49 @@ describe('inquiryService', () => {
     mockedAxios.post = vi.fn().mockRejectedValue(new Error('network'))
 
     await expect(createInquiry(payload)).rejects.toThrow()
+  })
+
+  // New tests for getInquiry and replyInquiry
+  it('getInquiry calls correct api url and returns detail', async () => {
+    const fakeDetail = {
+      id: '123',
+      title: 'Detail',
+      status: InquiryStatus.NEW,
+      badges: [],
+      content: 'Full content',
+      email: 'c@example.com',
+      name: 'Customer',
+      createdAt: '2025-01-01T00:00:00Z',
+      messages: [{ id: 'm1', content: 'Hello', sender: 'customer', createdAt: '2025-01-01T00:00:00Z' }],
+    }
+
+    mockedAxios.get = vi.fn().mockResolvedValue({ data: fakeDetail })
+
+    const res = await getInquiry('123')
+
+    const expectedUrl = `${import.meta.env.VITE_API_URL}/inquiries/123`
+    expect(mockedAxios.get).toHaveBeenCalledWith(expectedUrl)
+    expect(res).toEqual(fakeDetail)
+  })
+
+  it('getInquiry propagates errors', async () => {
+    mockedAxios.get = vi.fn().mockRejectedValue(new Error('network'))
+    await expect(getInquiry('123')).rejects.toThrow()
+  })
+
+  it('replyInquiry posts reply and returns created message', async () => {
+    const fakeMessage = { id: 'm2', content: 'Thanks', sender: 'staff', createdAt: '2025-01-02T00:00:00Z' }
+    mockedAxios.post = vi.fn().mockResolvedValue({ data: fakeMessage })
+
+    const res = await replyInquiry('123', 'Thanks')
+
+    const expectedUrl = `${import.meta.env.VITE_API_URL}/inquiries/123/reply`
+    expect(mockedAxios.post).toHaveBeenCalledWith(expectedUrl, { content: 'Thanks' })
+    expect(res).toEqual(fakeMessage)
+  })
+
+  it('replyInquiry propagates errors', async () => {
+    mockedAxios.post = vi.fn().mockRejectedValue(new Error('network'))
+    await expect(replyInquiry('123', 'Hello')).rejects.toThrow()
   })
 })
