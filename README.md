@@ -4,6 +4,13 @@
 
 inquiry-web (inq_web) is a React + Vite + TypeScript frontend prototype for an AI Customer Inquiry Board. The app's vision is to provide a public inquiry submission form for customers and a JWT-protected staff dashboard with a Kanban-style board, real-time updates, and inquiry reply workflows. This README clearly separates current implementation from planned features.
 
+## App key features
+
+- Public Inquiry Form (customer-facing submission)
+- Staff dashboard / Kanban board for managing inquiries
+- Real-time updates via WebSocket
+- Public route for submissions: /inquiry (no authentication required)
+
 ## Inquiry Board
 
 The Inquiry Board is the staff-facing dashboard used to manage customer inquiries. It provides a Kanban-style interface where inquiries are organized into columns by status. Key features:
@@ -19,6 +26,7 @@ Implementation notes:
 
 ## Current implementation (what exists now)
 
+- Public Inquiry Form available at src/pages/public/InquiryForm.tsx and routed at /inquiry for customer submissions.
 - Staff Login page (src/pages/Login.tsx) with a simple email/password form.
 - Protected Inquiry Board page with Kanban components (src/pages/admin/Board.tsx).
 - Kanban board UI with drag-and-drop support implemented via dnd-kit.
@@ -29,7 +37,6 @@ Implementation notes:
 
 ## Planned features (not yet implemented)
 
-- Public customer inquiry submission form (public-facing submission UI)
 - Detailed inquiry view and full reply workflow (backend integration and UI polishing)
 
 ## Getting started
@@ -95,6 +102,7 @@ Also ensure VITE_WS_URL is set to enable real-time board updates (see Configurat
 
 - /login - staff login page (src/pages/Login.tsx)
 - /board - protected staff Inquiry Board (src/pages/Board.tsx)
+- /inquiry - public inquiry submission form (src/pages/public/InquiryForm.tsx) - no authentication required
 - All other routes redirect to /board
 
 The route protection is implemented with src/components/PrivateRoute.tsx which uses the AuthContext to guard access and redirects unauthenticated users to /login.
