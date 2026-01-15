@@ -1,4 +1,3 @@
-import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, vi, beforeEach, expect } from 'vitest'
@@ -19,7 +18,7 @@ describe('StaffManagement', () => {
   })
 
   it('renders user list', async () => {
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValue(sampleUsers)
+    ;(userService.getUsers as unknown as any).mockResolvedValue(sampleUsers)
 
     render(<StaffManagement />)
 
@@ -29,7 +28,7 @@ describe('StaffManagement', () => {
   })
 
   it('opens Add modal', async () => {
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValue([])
+    ;(userService.getUsers as unknown as any).mockResolvedValue([])
     const user = userEvent.setup()
     render(<StaffManagement />)
 
@@ -43,7 +42,7 @@ describe('StaffManagement', () => {
   })
 
   it('validates add modal and prevents submit for invalid email/password', async () => {
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValue([])
+    ;(userService.getUsers as unknown as any).mockResolvedValue([])
     const createSpy = vi.spyOn(userService, 'createUser').mockResolvedValue({ id: 'x', email: 'x@x.com' } as any)
 
     const user = userEvent.setup()
@@ -62,7 +61,7 @@ describe('StaffManagement', () => {
 
   it('submits add form and refreshes list', async () => {
     // getUsers called twice: initial and after create
-    ;(userService.getUsers as unknown as vi.Mock)
+    ;(userService.getUsers as unknown as any)
       .mockResolvedValueOnce([])
       .mockResolvedValueOnce([{ id: 'u3', email: 'new@example.com' }])
 
@@ -87,9 +86,9 @@ describe('StaffManagement', () => {
   })
 
   it('opens edit modal and calls update', async () => {
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValue(sampleUsers)
+    ;(userService.getUsers as unknown as any).mockResolvedValue(sampleUsers)
     const updateSpy = vi.spyOn(userService, 'updateUser').mockResolvedValue({ id: 'u1', email: 'updated@example.com' } as any)
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValueOnce(sampleUsers).mockResolvedValueOnce([{ id: 'u1', email: 'updated@example.com' }])
+    ;(userService.getUsers as unknown as any).mockResolvedValueOnce(sampleUsers).mockResolvedValueOnce([{ id: 'u1', email: 'updated@example.com' }])
 
     const user = userEvent.setup()
     render(<StaffManagement />)
@@ -109,9 +108,9 @@ describe('StaffManagement', () => {
   })
 
   it('deletes user when confirmed', async () => {
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValue(sampleUsers)
+    ;(userService.getUsers as unknown as any).mockResolvedValue(sampleUsers)
     const deleteSpy = vi.spyOn(userService, 'deleteUser').mockResolvedValue(undefined)
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValueOnce(sampleUsers).mockResolvedValueOnce([{ id: 'u2', email: 'b@example.com' }])
+    ;(userService.getUsers as unknown as any).mockResolvedValueOnce(sampleUsers).mockResolvedValueOnce([{ id: 'u2', email: 'b@example.com' }])
 
     vi.spyOn(window, 'confirm').mockReturnValue(true)
 
@@ -127,7 +126,7 @@ describe('StaffManagement', () => {
   })
 
   it('does not delete when confirmation cancelled', async () => {
-    ;(userService.getUsers as unknown as vi.Mock).mockResolvedValue(sampleUsers)
+    ;(userService.getUsers as unknown as any).mockResolvedValue(sampleUsers)
     const deleteSpy = vi.spyOn(userService, 'deleteUser').mockResolvedValue(undefined)
     vi.spyOn(window, 'confirm').mockReturnValue(false)
 

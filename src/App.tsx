@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Board from './pages/admin/Board'
 import PrivateRoute from './components/PrivateRoute'
 import InquiryForm from './pages/public/InquiryForm'
+import StaffManagement from './pages/admin/StaffManagement'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
 
           <Route element={<PrivateRoute />}>
             <Route path="/board" element={<Board />} />
+            <Route path="/admin/staff" element={<StaffManagement />} />
           </Route>
 
           <Route path="/inquiry" element={<InquiryForm />} />

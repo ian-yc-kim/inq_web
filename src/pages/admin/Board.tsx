@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { Inquiry, InquiryStatus } from '../../types/inquiry'
 import * as inquiryService from '../../services/inquiryService'
 import * as socketService from '../../services/socketService'
@@ -110,6 +111,11 @@ export default function Board() {
   return (
     <main>
       <h1>Inquiry Board</h1>
+
+      <div style={{ marginBottom: 12 }}>
+        <Link to="/admin/staff" aria-label="staff-mgmt-link">Staff Management</Link>
+      </div>
+
       {isLoading && <div>Loading...</div>}
       {error && <div role="alert">{error}</div>}
 

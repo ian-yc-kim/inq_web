@@ -1,6 +1,7 @@
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { describe, it, vi, beforeEach, expect } from 'vitest'
 import Board from './Board'
+import { BrowserRouter } from 'react-router-dom'
 
 // mocks
 vi.mock('../../services/inquiryService')
@@ -72,7 +73,11 @@ describe('Board integration', () => {
   })
 
   it('renders inquiries in correct columns', async () => {
-    render(<Board />)
+    render(
+      <BrowserRouter>
+        <Board />
+      </BrowserRouter>
+    )
 
     await waitFor(() => expect(screen.getByText('New 1')).toBeInTheDocument())
 
@@ -86,7 +91,11 @@ describe('Board integration', () => {
   })
 
   it('calls updateInquiry on drag end and updates optimistically', async () => {
-    render(<Board />)
+    render(
+      <BrowserRouter>
+        <Board />
+      </BrowserRouter>
+    )
 
     await waitFor(() => expect(screen.getByText('New 1')).toBeInTheDocument())
 
@@ -107,7 +116,11 @@ describe('Board integration', () => {
     ;(inquiryService.updateInquiry as any) = vi.fn().mockRejectedValue(new Error('fail'))
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    render(<Board />)
+    render(
+      <BrowserRouter>
+        <Board />
+      </BrowserRouter>
+    )
 
     await waitFor(() => expect(screen.getByText('New 1')).toBeInTheDocument())
 

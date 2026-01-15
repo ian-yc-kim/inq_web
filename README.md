@@ -29,6 +29,7 @@ Implementation notes:
 - Public Inquiry Form available at src/pages/public/InquiryForm.tsx and routed at /inquiry for customer submissions.
 - Staff Login page (src/pages/Login.tsx) with a simple email/password form.
 - Protected Inquiry Board page with Kanban components (src/pages/admin/Board.tsx).
+- Staff Management UI for managing staff users at src/pages/admin/StaffManagement.tsx routed at /admin/staff (protected).
 - Kanban board UI with drag-and-drop support implemented via dnd-kit.
 - WebSocket-powered real-time updates via src/services/socketService.ts.
 - Client-side routing with react-router-dom and protected routes via src/components/PrivateRoute.tsx.
@@ -101,7 +102,8 @@ Also ensure VITE_WS_URL is set to enable real-time board updates (see Configurat
 ## Routing and protected routes
 
 - /login - staff login page (src/pages/Login.tsx)
-- /board - protected staff Inquiry Board (src/pages/Board.tsx)
+- /board - protected staff Inquiry Board (src/pages/admin/Board.tsx)
+- /admin/staff - protected Staff Management UI (src/pages/admin/StaffManagement.tsx)
 - /inquiry - public inquiry submission form (src/pages/public/InquiryForm.tsx) - no authentication required
 - All other routes redirect to /board
 
